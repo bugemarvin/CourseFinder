@@ -1,16 +1,18 @@
 import Queue from 'bull';
 import dotenv from 'dotenv';
-import Email from '../utils/email';
+import sendEmail from '../utils/email';
 
 dotenv.config();
 
 // Email Worker
-const EmailWorker = new Queue('Send email');
+const { REDIS_DEV_URI, REDIS_PROD_URI } = process.env;
+const redisUrl = process.env.ENV === 'prod' ? REDIS_PROD_URI : REDIS_DEV_URI;
+const EmailWorker = new Queue('Send email', redisUrl);
 
 EmailWorker.process((job) => {
   const { email, subject, body } = job.data;
   try {
-    Email.sendEmail(email, subject, body);
+    sendEmail(email, subject, body);
   } catch (error) {
     console.error(`Processing email job #${job.id} failed:\n\t${error.message}`);
   }

@@ -6,6 +6,7 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -24,16 +25,20 @@ function SignUp() {
       console.log(response.data);
       setIsSuccess(true);
       setTimeout(() => {
-        window.location.href = "/login";
-      }, 1000);
+      window.location.href = "/login"
+      }, 2000);
     }).catch(err => {
-      console.log(err);
+      console.log("user already exist", err);
+      setIsRegistered(true);
+      setTimeout(() => {
+        setIsRegistered(false);
+      }, 2000);
     });
   }
 
   return (
     <>
-      {isSuccess && (
+      {isSuccess ? (
         <div className="alert alert-success d-flex align-items-center" role="alert">
           <svg
             className="bi flex-shrink-0 me-2"
@@ -45,7 +50,22 @@ function SignUp() {
           </svg>
           <div>Welcome, signing up was successful!</div>
         </div>
-      )}
+      ) : 
+          isRegistered && 
+        <div className="alert alert-danger d-flex align-items-center" role="alert">
+          <svg
+            className="bi flex-shrink-0 me-2"
+            width="24"
+            height="24"
+            role="img"
+            aria-label="danger:"
+          >
+          </svg>
+          <div>User already registered. Please login....</div>
+          
+        </div>
+      
+    }
       <form  onSubmit={handleSubmit}>
         <div className="User_forms">
           <div className="User_forms-User_forms">
