@@ -17,6 +17,8 @@ A simple yet powerful web application designed to help users discover, compare, 
 ## Landing page
 Landing page
 
+[View Demo](https://coursefinder.marvinkurland.tech)
+
 <img src="./frontend/src/image.png" />
 
 ## Installation and setup
